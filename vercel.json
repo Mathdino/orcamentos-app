@@ -1,0 +1,13 @@
+{
+  "buildCommand": "npx prisma generate && next build",
+  "installCommand": "pnpm install",
+  "framework": "nextjs",
+  "functions": {
+    "app/actions/**/*.ts": {
+      "maxDuration": 30
+    }
+  },
+  "env": {
+    "NODE_ENV": "production"
+  }
+}

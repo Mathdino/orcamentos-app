@@ -6,6 +6,14 @@ import { revalidatePath } from "next/cache";
 
 export async function salvarOrcamento(dados: DadosOrcamento) {
   try {
+    // Log para debug na Vercel
+    console.log("🔍 [Vercel Debug] Iniciando salvarOrcamento");
+    console.log("🔍 [Vercel Debug] NODE_ENV:", process.env.NODE_ENV);
+    console.log(
+      "🔍 [Vercel Debug] DATABASE_URL configurado:",
+      !!process.env.DATABASE_URL
+    );
+
     // Validações básicas
     if (!dados.cliente || !dados.cliente.nome || !dados.cliente.telefone) {
       throw new Error("Dados do cliente são obrigatórios");
@@ -26,6 +34,8 @@ export async function salvarOrcamento(dados: DadosOrcamento) {
       }
     }
 
+    console.log("🔍 [Vercel Debug] Validações passaram");
+
     // Calcular valor total dos materiais
     const valorMateriais = dados.materiais.reduce((total, material) => {
       return total + material.quantidade * material.valorUnit;
@@ -36,12 +46,16 @@ export async function salvarOrcamento(dados: DadosOrcamento) {
 
     const valorTotal = valorMateriais + dados.valorMaoObra + (dados.lucro || 0);
 
+    console.log("🔍 [Vercel Debug] Cálculos realizados");
+
     // Criar ou encontrar cliente
     let cliente = await prisma.cliente.findFirst({
       where: {
         telefone: dados.cliente.telefone,
       },
     });
+
+    console.log("🔍 [Vercel Debug] Cliente encontrado:", !!cliente);
 
     if (!cliente) {
       // Ajuste: garantir que só um dos campos (cpf/cnpj) seja enviado
@@ -71,11 +85,13 @@ export async function salvarOrcamento(dados: DadosOrcamento) {
         clienteData.complemento = dados.cliente.complemento;
 
       try {
+        console.log("🔍 [Vercel Debug] Criando novo cliente");
         cliente = await prisma.cliente.create({
           data: clienteData,
         });
+        console.log("🔍 [Vercel Debug] Cliente criado com sucesso");
       } catch (clienteError) {
-        console.error("Erro ao criar cliente:", clienteError);
+        console.error("❌ [Vercel Debug] Erro ao criar cliente:", clienteError);
         throw new Error(
           `Erro ao criar cliente: ${
             clienteError instanceof Error
@@ -85,6 +101,8 @@ export async function salvarOrcamento(dados: DadosOrcamento) {
         );
       }
     }
+
+    console.log("🔍 [Vercel Debug] Preparando dados do orçamento");
 
     // Preparar dados do orçamento
     const orcamentoData: any = {
@@ -131,6 +149,8 @@ export async function salvarOrcamento(dados: DadosOrcamento) {
       orcamentoData.dataTerminoObra = new Date(dados.dataTerminoObra);
     }
 
+    console.log("🔍 [Vercel Debug] Criando orçamento no banco");
+
     // Criar orçamento
     const orcamento = await prisma.orcamento.create({
       data: orcamentoData,
@@ -140,16 +160,21 @@ export async function salvarOrcamento(dados: DadosOrcamento) {
       },
     });
 
+    console.log("🔍 [Vercel Debug] Orçamento criado com sucesso");
+
     revalidatePath("/orcamentos");
     revalidatePath("/financeiro");
     return { success: true, orcamento };
   } catch (error) {
-    console.error("Erro detalhado ao salvar orçamento:", error);
+    console.error(
+      "❌ [Vercel Debug] Erro detalhado ao salvar orçamento:",
+      error
+    );
 
     // Log mais detalhado para debugging
     if (error instanceof Error) {
-      console.error("Mensagem de erro:", error.message);
-      console.error("Stack trace:", error.stack);
+      console.error("❌ [Vercel Debug] Mensagem de erro:", error.message);
+      console.error("❌ [Vercel Debug] Stack trace:", error.stack);
     }
 
     let errorMsg = "Erro ao salvar orçamento";
