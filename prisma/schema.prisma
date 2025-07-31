@@ -1,0 +1,122 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Cliente {
+  id        String   @id @default(cuid())
+  nome      String
+  telefone  String
+  tipo      String
+  cpf       String?  @unique
+  cnpj      String?  @unique
+  email     String?  @unique
+  endereco  String
+  cep       String
+  numero    String
+  complemento String?
+  bairro    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  orcamentos Orcamento[]
+  
+  @@map("clientes")
+}
+
+model Orcamento {
+  id                String   @id @default(cuid())
+  clienteId         String
+  localObra         String
+  detalhesEspaco    String
+  metragem          Float
+  tempoObra         Int // em dias
+  tipoServico       String
+  tipoMetragem      String
+  valorEmpreita     Float?
+  valorDiariaPrincipal Float?
+  diasPrincipal     Int?
+  ajudantes         Json? // [{ nome, valorDiaria, dias }]
+  especificacoes    String?
+  valorMaoObra      Float
+  valorTotal        Float
+  custoMateriais    Float @default(0) // Custo real dos materiais para calcular lucro
+  lucro             Float?
+  status            StatusOrcamento @default(PENDENTE)
+  observacoes       String?
+  dataInicio        DateTime?
+  dataConclusao     DateTime?
+  dataInicioObra    DateTime?
+  dataTerminoObra   DateTime?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  
+  cliente   Cliente @relation(fields: [clienteId], references: [id])
+  materiais Material[]
+  pagamentos Pagamento[]
+  
+  @@map("orcamentos")
+}
+
+model Material {
+  id          String @id @default(cuid())
+  orcamentoId String
+  nome        String
+  marca       String
+  quantidade  Float
+  unidade     String // litros, metros, unidades, etc
+  valorUnit   Float
+  valorTotal  Float
+  
+  orcamento Orcamento @relation(fields: [orcamentoId], references: [id], onDelete: Cascade)
+  
+  @@map("materiais")
+}
+
+model Pagamento {
+  id          String @id @default(cuid())
+  orcamentoId String
+  valor       Float
+  metodoPagamento MetodoPagamento
+  statusPagamento StatusPagamento @default(PENDENTE)
+  dataVencimento DateTime
+  dataPagamento DateTime?
+  numeroParcela Int @default(1)
+  totalParcelas Int @default(1)
+  observacoes String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  orcamento Orcamento @relation(fields: [orcamentoId], references: [id], onDelete: Cascade)
+  
+  @@map("pagamentos")
+}
+
+enum StatusOrcamento {
+  PENDENTE
+  APROVADO
+  REJEITADO
+  EM_ANDAMENTO
+  CONCLUIDO
+  NAO_INICIADO
+  EM_PREPARACAO
+}
+
+enum StatusPagamento {
+  PENDENTE
+  PAGO
+  ATRASADO
+  CANCELADO
+}
+
+enum MetodoPagamento {
+  PIX
+  DINHEIRO
+  CARTAO_CREDITO
+  CARTAO_DEBITO
+  TRANSFERENCIA
+}
