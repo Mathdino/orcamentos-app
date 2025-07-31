@@ -70,14 +70,14 @@ export async function gerarPDF(dados: DadosOrcamento, valorTotal: number) {
     adicionarMarcaDagua(doc, base64LogoFundo, pageWidth, pageHeight);
 
     // Barra superior
-    doc.setFillColor(0, 0, 0); // preto
+    doc.setFillColor(127, 170, 55); // Verde #7faa37
     doc.rect(0, 0, pageWidth, 40, "F");
     // Linha colorida abaixo
-    doc.setFillColor(235, 102, 3); // laranja #7eaa37
+    doc.setFillColor(147, 190, 75); // Verde mais claro
     doc.rect(0, 40, pageWidth, 4, "F");
 
-    // Logo no topo à esquerda
-    doc.addImage(base64LogoTopo, "PNG", margin, 6, 28, 28, undefined, "FAST");
+    // Logo no topo à esquerda - ajustado para não ficar tão expandido
+    doc.addImage(base64LogoTopo, "PNG", margin, 8, 24, 24, undefined, "FAST");
 
     // Título no topo
     doc.setFontSize(18);
@@ -132,7 +132,7 @@ export async function gerarPDF(dados: DadosOrcamento, valorTotal: number) {
     doc.setFont("helvetica", "bold");
     doc.text("Informações do Cliente", margin, yPosition);
     yPosition += 4;
-    doc.setDrawColor(235, 102, 3);
+    doc.setDrawColor(127, 170, 55); // Verde #7faa37
     doc.setLineWidth(1);
     doc.line(margin, yPosition, pageWidth - margin, yPosition);
     yPosition += 8;
@@ -166,7 +166,7 @@ export async function gerarPDF(dados: DadosOrcamento, valorTotal: number) {
     doc.setFont("helvetica", "bold");
     doc.text("Informações da Obra", margin, yPosition);
     yPosition += 4;
-    doc.setDrawColor(235, 102, 3);
+    doc.setDrawColor(127, 170, 55); // Verde #7faa37
     doc.setLineWidth(1);
     doc.line(margin, yPosition, pageWidth - margin, yPosition);
     yPosition += 8;
@@ -243,7 +243,7 @@ export async function gerarPDF(dados: DadosOrcamento, valorTotal: number) {
     doc.setFont("helvetica", "bold");
     doc.text("Materiais", margin, yPosition);
     yPosition += 4;
-    doc.setDrawColor(235, 102, 3);
+    doc.setDrawColor(127, 170, 55); // Verde #7faa37
     doc.setLineWidth(1);
     doc.line(margin, yPosition, pageWidth - margin, yPosition);
     yPosition += 8;
@@ -284,7 +284,7 @@ export async function gerarPDF(dados: DadosOrcamento, valorTotal: number) {
     doc.setFont("helvetica", "bold");
     doc.text("Informações da obra", margin, yPosition);
     yPosition += 4;
-    doc.setDrawColor(235, 102, 3);
+    doc.setDrawColor(127, 170, 55); // Verde #7faa37
     doc.setLineWidth(1);
     doc.line(margin, yPosition, pageWidth - margin, yPosition);
     yPosition += 8;
@@ -349,7 +349,7 @@ export async function gerarPDF(dados: DadosOrcamento, valorTotal: number) {
     doc.setFont("helvetica", "bold");
     doc.text("Valor total", margin, yPosition);
     yPosition += 4;
-    doc.setDrawColor(235, 102, 3);
+    doc.setDrawColor(127, 170, 55); // Verde #7faa37
     doc.setLineWidth(1);
     doc.line(margin, yPosition, pageWidth - margin, yPosition);
     yPosition += 6;
@@ -399,7 +399,7 @@ export async function gerarPDF(dados: DadosOrcamento, valorTotal: number) {
       doc.setFont("helvetica", "bold");
       doc.text("Observações Adicionais", margin, yPosition);
       yPosition += 7;
-      doc.setDrawColor(235, 102, 3);
+      doc.setDrawColor(127, 170, 55); // Verde #7faa37
       doc.setLineWidth(0.5);
       doc.line(margin, yPosition, pageWidth - margin, yPosition);
       yPosition += 7;
