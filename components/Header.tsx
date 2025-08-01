@@ -21,7 +21,7 @@ export default function Header() {
       className="fixed top-0 left-0 w-full z-50 border-b border-grenn-400 shadow-lg"
       style={{ background: "#080d10" }}
     >
-      <div className="container mx-auto flex items-center justify-between py-2 px-4">
+      <div className="container mx-auto flex items-center justify-between py-6 px-6">
         <Link href="/">
           <Image
             src="/logo.png"
