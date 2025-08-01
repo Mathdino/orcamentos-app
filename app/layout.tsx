@@ -1,22 +1,22 @@
-import type React from "react"
-import type { Metadata } from "next"
-import { Inter } from "next/font/google"
-import "./globals.css"
-import { Toaster } from "@/components/ui/toaster"
-import Header from "@/components/Header"
+import type React from "react";
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import "./globals.css";
+import { Toaster } from "@/components/ui/toaster";
+import Header from "@/components/Header";
 
-const inter = Inter({ subsets: ["latin"] })
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "HS Color - Sistema de Orçamentos",
-  description: "Sistema completo para gerenciamento de orçamentos de pintura",
-    generator: 'v0.dev'
-}
+  title: "Orcamentos - Sistema de Orçamentos",
+  description: "Sistema completo para gerenciamento de orçamentos de obras",
+  generator: "v0.dev",
+};
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <html lang="pt-BR">
@@ -25,11 +25,12 @@ export default function RootLayout({
       </head>
       <body className={inter.className + " bg-white text-black min-h-screen"}>
         <Header />
-        <div className="pt-20">{/* padding para o header */}
+        <div className="pt-20">
+          {/* padding para o header */}
           {children}
         </div>
         <Toaster />
       </body>
     </html>
-  )
+  );
 }

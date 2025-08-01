@@ -20,14 +20,14 @@ export default function Header() {
   const [open, setOpen] = useState(false);
   return (
     <header
-      className="fixed top-0 left-0 w-full z-50 border-b border-blue-400 shadow-lg"
+      className="fixed top-0 left-0 w-full z-50 border-b border-grenn-400 shadow-lg"
       style={{ background: "#080d10" }}
     >
       <div className="container mx-auto flex items-center justify-between py-2 px-4">
         <Link href="/">
           <Image
             src="/logo.png"
-            alt="Logo H.S Color"
+            alt="Logo Orcamentos"
             width={96}
             height={96}
             className="h-8 w-auto"

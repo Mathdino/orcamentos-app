@@ -40,7 +40,7 @@ export default function Home() {
             </CardContent>
           </Card>
 
-          <Card className="bg-white border border-yellow-900/60 shadow-xl rounded-2xl hover:scale-105 hover:shadow-yellow-400/30 transition-all duration-300">
+          <Card className="bg-white border border-grenn-900/60 shadow-xl rounded-2xl hover:scale-105 hover:shadow-grenn-400/30 transition-all duration-300">
             <CardHeader className="text-center">
               <div className="mx-auto bg-green-100 w-24 h-24 rounded-full flex items-center justify-center mb-4">
                 <FileText className="w-12 h-12 text-green-900" />
@@ -62,7 +62,7 @@ export default function Home() {
             </CardContent>
           </Card>
 
-          <Card className="bg-white border border-yellow-900/60 shadow-xl rounded-2xl hover:scale-105 hover:shadow-yellow-400/30 transition-all duration-300">
+          <Card className="bg-white border border-grenn-900/60 shadow-xl rounded-2xl hover:scale-105 hover:shadow-grenn-400/30 transition-all duration-300">
             <CardHeader className="text-center">
               <div className="mx-auto bg-yellow-100 w-24 h-24 rounded-full flex items-center justify-center mb-4">
                 <Hammer className="w-12 h-12 text-yellow-600" />
@@ -84,7 +84,7 @@ export default function Home() {
             </CardContent>
           </Card>
 
-          <Card className="bg-white border border-yellow-900/60 shadow-xl rounded-2xl hover:scale-105 hover:shadow-yellow-400/30 transition-all duration-300">
+          <Card className="bg-white border border-grenn-900/60 shadow-xl rounded-2xl hover:scale-105 hover:shadow-grenn-400/30 transition-all duration-300">
             <CardHeader className="text-center">
               <div className="mx-auto bg-purple-100 w-24 h-24 rounded-full flex items-center justify-center mb-4">
                 <Users className="w-12 h-12 text-purple-600" />
@@ -106,7 +106,7 @@ export default function Home() {
             </CardContent>
           </Card>
 
-          <Card className="bg-white border border-yellow-900/60 shadow-xl rounded-2xl hover:scale-105 hover:shadow-yellow-400/30 transition-all duration-300">
+          <Card className="bg-white border border-grenn-900/60 shadow-xl rounded-2xl hover:scale-105 hover:shadow-grenn-400/30 transition-all duration-300">
             <CardHeader className="text-center">
               <div className="mx-auto bg-orange-100 w-24 h-24 rounded-full flex items-center justify-center mb-4">
                 <Calculator className="w-12 h-12 text-orange-600" />
@@ -129,7 +129,7 @@ export default function Home() {
           </Card>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-lg p-8 max-w-4xl mx-auto border border-yellow-900/60 mt-16">
+        <div className="bg-white rounded-2xl shadow-lg p-8 max-w-4xl mx-auto border border-grenn-900/60 mt-16">
           <h2 className="text-2xl font-bold mb-4" style={{ color: "#000" }}>
             Funcionalidades do Sistema
           </h2>
