@@ -2,10 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
-import { Button } from "@/components/ui/button";
-import { Menu } from "lucide-react";
-import React, { useState } from "react";
+import { usePathname } from "next/navigation";
 
 const menuItems = [
   { label: "Início", href: "/" },
@@ -17,7 +14,8 @@ const menuItems = [
 ];
 
 export default function Header() {
-  const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+
   return (
     <header
       className="fixed top-0 left-0 w-full z-50 border-b border-grenn-400 shadow-lg"
@@ -35,39 +33,23 @@ export default function Header() {
           />
         </Link>
         <nav className="hidden md:flex gap-6">
-          {menuItems.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="text-white font-semibold hover:text-[#7eaa37] transition-colors"
-            >
-              {item.label}
-            </Link>
-          ))}
+          {menuItems.map((item) => {
+            const isActive = pathname === item.href;
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`font-semibold transition-colors ${
+                  isActive
+                    ? "text-[#7eaa37]"
+                    : "text-white hover:text-[#7eaa37]"
+                }`}
+              >
+                {item.label}
+              </Link>
+            );
+          })}
         </nav>
-        <div className="md:hidden">
-          <Sheet open={open} onOpenChange={setOpen}>
-            <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" aria-label="Abrir menu">
-                <Menu className="w-7 h-7" style={{ color: "#FFF" }} />
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="right" className="border-l border-green-400">
-              <nav className="flex flex-col gap-4 mt-8">
-                {menuItems.map((item) => (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className="text-black text-lg font-semibold hover:text-[#7eaa37] transition-colors"
-                    onClick={() => setOpen(false)}
-                  >
-                    {item.label}
-                  </Link>
-                ))}
-              </nav>
-            </SheetContent>
-          </Sheet>
-        </div>
       </div>
     </header>
   );

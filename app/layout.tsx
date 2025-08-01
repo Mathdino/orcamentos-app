@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import Header from "@/components/Header";
+import BottomMenu from "@/components/BottomMenu";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,10 +26,11 @@ export default function RootLayout({
       </head>
       <body className={inter.className + " bg-white text-black min-h-screen"}>
         <Header />
-        <div className="pt-20">
-          {/* padding para o header */}
+        <div className="pt-10 pb-20 md:pb-0">
+          {/* padding para o header e bottom menu (apenas mobile) */}
           {children}
         </div>
+        <BottomMenu />
         <Toaster />
       </body>
     </html>

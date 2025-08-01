@@ -2,12 +2,22 @@
 
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { buscarClientesComOrcamentos, editarCliente, excluirCliente } from "@/app/actions/cliente-actions";
+import {
+  buscarClientesComOrcamentos,
+  editarCliente,
+  excluirCliente,
+} from "@/app/actions/cliente-actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import { format } from "date-fns";
-import { formatarBRL } from "../../lib/utils"
+import { formatarBRL } from "../../lib/utils";
 
 interface Cliente {
   id: string;
@@ -50,7 +60,13 @@ export default function ClientesPage() {
   const [filtroAprovados, setFiltroAprovados] = useState(false);
   const [busca, setBusca] = useState("");
   const [editando, setEditando] = useState<Cliente | null>(null);
-  const [form, setForm] = useState({ nome: "", telefone: "", email: "", endereco: "", bairro: "" });
+  const [form, setForm] = useState({
+    nome: "",
+    telefone: "",
+    email: "",
+    endereco: "",
+    bairro: "",
+  });
   const [excluindo, setExcluindo] = useState<string | null>(null);
 
   useEffect(() => {
@@ -62,10 +78,12 @@ export default function ClientesPage() {
     try {
       const resultado = await buscarClientesComOrcamentos();
       if (resultado.success) {
-        setClientes((resultado.clientes || []).map((c: any) => ({
-          ...c,
-          email: c.email === null ? undefined : c.email,
-        })));
+        setClientes(
+          (resultado.clientes || []).map((c: any) => ({
+            ...c,
+            email: c.email === null ? undefined : c.email,
+          }))
+        );
       }
     } catch (error) {
       alert("Erro ao carregar clientes");
@@ -131,20 +149,21 @@ export default function ClientesPage() {
       <div className="max-w-5xl mx-auto">
         <div className="h-8" />
         <div className="mb-2">
-          <h1 className="text-2xl font-bold mb-6 text-black">Clientes</h1>
-          <div className="flex flex-col sm:flex-row gap-2 items-stretch sm:items-center w-full max-w-md sm:max-w-none">
+          <h1 className="text-3xl font-bold text-black">Clientes</h1>
+          <p className="text-black">Gerencie todos os clientes</p>
+          <div className="flex flex-col sm:flex-row gap-2 items-stretch sm:items-center w-full max-w-md sm:max-w-none pt-5 pb-5">
             <Input
               placeholder="Buscar por nome ou data (dd/mm/aaaa)"
               value={busca}
-              onChange={e => setBusca(e.target.value)}
+              onChange={(e) => setBusca(e.target.value)}
               className="w-full sm:w-56 placeholder-black text-black border-gray-400"
-              style={{ color: '#000', borderColor: '#888' }}
+              style={{ color: "#000", borderColor: "#888" }}
             />
             <Button
               variant={filtroAprovados ? "default" : "outline"}
               onClick={() => setFiltroAprovados((v) => !v)}
               className="text-black border-gray-400"
-              style={{ color: '#000', borderColor: '#888' }}
+              style={{ color: "#000", borderColor: "#888" }}
             >
               {filtroAprovados ? "Mostrar Todos" : "Filtrar por Aprovados"}
             </Button>
@@ -158,7 +177,7 @@ export default function ClientesPage() {
               <Card key={cliente.id} className="shadow-xl">
                 <CardHeader className="relative">
                   <CardTitle>{cliente.nome}</CardTitle>
-                  {cliente.orcamentos.map((orcamento) => (
+                  {cliente.orcamentos.map((orcamento) =>
                     orcamento.status === "APROVADO" && orcamento.dataInicio ? (
                       <span
                         key={orcamento.id}
@@ -168,27 +187,61 @@ export default function ClientesPage() {
                         {format(new Date(orcamento.dataInicio), "dd/MM/yyyy")}
                       </span>
                     ) : null
-                  ))}
+                  )}
                   <div className="flex gap-2 mt-2">
-                    <Button size="sm" variant="outline" onClick={() => handleEditar(cliente)}>Editar</Button>
-                    <Button size="sm" variant="destructive" onClick={() => handleExcluir(cliente.id)}>Excluir</Button>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => handleEditar(cliente)}
+                    >
+                      Editar
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="destructive"
+                      onClick={() => handleExcluir(cliente.id)}
+                    >
+                      Excluir
+                    </Button>
                   </div>
                 </CardHeader>
                 <CardContent>
                   {cliente.orcamentos.length === 0 ? (
-                    <div className="text-gray-400 text-sm">Nenhum orçamento para este cliente.</div>
+                    <div className="text-gray-400 text-sm">
+                      Nenhum orçamento para este cliente.
+                    </div>
                   ) : (
                     <div className="space-y-4">
                       {cliente.orcamentos.map((orcamento) => (
-                        <div key={orcamento.id} className="border rounded p-2 bg-gray-50 flex flex-col md:flex-row md:items-center md:justify-between">
+                        <div
+                          key={orcamento.id}
+                          className="border rounded p-2 bg-gray-50 flex flex-col md:flex-row md:items-center md:justify-between"
+                        >
                           <div>
-                            <div><b>Obra:</b> {orcamento.localObra}</div>
+                            <div>
+                              <b>Obra:</b> {orcamento.localObra}
+                            </div>
                           </div>
                           <div>
-                            <b>Valor:</b> <span className="font-bold">{formatarBRL(orcamento.valorTotal)}</span>
+                            <b>Valor:</b>{" "}
+                            <span className="font-bold">
+                              {formatarBRL(orcamento.valorTotal)}
+                            </span>
                           </div>
                           <div>
-                            <b>Status:</b> <span className={"font-bold " + (orcamento.status === "APROVADO" ? "text-green-600" : orcamento.status === "CONCLUIDO" ? "text-green-600" : "text-gray-600")}>{orcamento.status}</span>
+                            <b>Status:</b>{" "}
+                            <span
+                              className={
+                                "font-bold " +
+                                (orcamento.status === "APROVADO"
+                                  ? "text-green-600"
+                                  : orcamento.status === "CONCLUIDO"
+                                  ? "text-green-600"
+                                  : "text-gray-600")
+                              }
+                            >
+                              {orcamento.status}
+                            </span>
                           </div>
                         </div>
                       ))}
@@ -206,20 +259,50 @@ export default function ClientesPage() {
             <DialogTitle>Editar Cliente</DialogTitle>
           </DialogHeader>
           <div className="space-y-2">
-            <Input placeholder="Nome" value={form.nome} onChange={e => setForm(f => ({ ...f, nome: e.target.value }))} />
-            <Input placeholder="Telefone" value={form.telefone} onChange={e => setForm(f => ({ ...f, telefone: e.target.value }))} />
-            <Input placeholder="Email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} />
+            <Input
+              placeholder="Nome"
+              value={form.nome}
+              onChange={(e) => setForm((f) => ({ ...f, nome: e.target.value }))}
+            />
+            <Input
+              placeholder="Telefone"
+              value={form.telefone}
+              onChange={(e) =>
+                setForm((f) => ({ ...f, telefone: e.target.value }))
+              }
+            />
+            <Input
+              placeholder="Email"
+              value={form.email}
+              onChange={(e) =>
+                setForm((f) => ({ ...f, email: e.target.value }))
+              }
+            />
             <div className="flex flex-col gap-2 mt-2">
-              <Input placeholder="Endereço" value={form.endereco} onChange={e => setForm(f => ({ ...f, endereco: e.target.value }))} />
-              <Input placeholder="Bairro" value={form.bairro} onChange={e => setForm(f => ({ ...f, bairro: e.target.value }))} />
+              <Input
+                placeholder="Endereço"
+                value={form.endereco}
+                onChange={(e) =>
+                  setForm((f) => ({ ...f, endereco: e.target.value }))
+                }
+              />
+              <Input
+                placeholder="Bairro"
+                value={form.bairro}
+                onChange={(e) =>
+                  setForm((f) => ({ ...f, bairro: e.target.value }))
+                }
+              />
             </div>
           </div>
           <DialogFooter>
             <Button onClick={handleSalvarEdicao}>Salvar</Button>
-            <Button variant="outline" onClick={() => setEditando(null)}>Cancelar</Button>
+            <Button variant="outline" onClick={() => setEditando(null)}>
+              Cancelar
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
     </div>
   );
-} 
+}

@@ -6,7 +6,7 @@ import { Plus, FileText, Users, Calculator, Hammer } from "lucide-react";
 export default function Home() {
   return (
     <div className="min-h-screen bg-white">
-      <div className="container mx-auto px-4 py-8 mt-30">
+      <div className="container mx-auto px-4 mt-10">
         <div className="h-8" />
         <div className="text-center mb-12">
           <h1
