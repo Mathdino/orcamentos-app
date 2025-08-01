@@ -14,24 +14,36 @@ export async function gerarPDF(dados: DadosOrcamento, valorTotal: number) {
     let yPosition = 30;
 
     // Carregar as logos
-    const logoTopoUrl = "/logo.png";
-    const logoFundoUrl = "/logo-HSColor-pdf.png";
+    const logoTopoUrl = "/logopdf.png";
+    const logoFundoUrl = "/logopdf-transparente.png";
     // Carregar logo do topo
     const responseLogoTopo = await fetch(logoTopoUrl);
+    if (!responseLogoTopo.ok) {
+      throw new Error(
+        `Erro ao carregar logo do topo: ${responseLogoTopo.status} ${responseLogoTopo.statusText}`
+      );
+    }
     const blobLogoTopo = await responseLogoTopo.blob();
     const base64LogoTopo = await new Promise<string>((resolve, reject) => {
       const reader: FileReader = new FileReader();
       reader.onloadend = () => resolve(reader.result as string);
-      reader.onerror = reject;
+      reader.onerror = () =>
+        reject(new Error("Erro ao converter logo do topo para base64"));
       reader.readAsDataURL(blobLogoTopo);
     });
     // Carregar logo de fundo (marca d'água)
     const responseLogoFundo = await fetch(logoFundoUrl);
+    if (!responseLogoFundo.ok) {
+      throw new Error(
+        `Erro ao carregar logo de fundo: ${responseLogoFundo.status} ${responseLogoFundo.statusText}`
+      );
+    }
     const blobLogoFundo = await responseLogoFundo.blob();
     const base64LogoFundo = await new Promise<string>((resolve, reject) => {
       const reader: FileReader = new FileReader();
       reader.onloadend = () => resolve(reader.result as string);
-      reader.onerror = reject;
+      reader.onerror = () =>
+        reject(new Error("Erro ao converter logo de fundo para base64"));
       reader.readAsDataURL(blobLogoFundo);
     });
 
@@ -70,14 +82,14 @@ export async function gerarPDF(dados: DadosOrcamento, valorTotal: number) {
     adicionarMarcaDagua(doc, base64LogoFundo, pageWidth, pageHeight);
 
     // Barra superior
-    doc.setFillColor(127, 170, 55); // Verde #7faa37
+    doc.setFillColor(8, 13, 16); // Verde preto
     doc.rect(0, 0, pageWidth, 40, "F");
     // Linha colorida abaixo
     doc.setFillColor(147, 190, 75); // Verde mais claro
     doc.rect(0, 40, pageWidth, 4, "F");
 
     // Logo no topo à esquerda - ajustado para não ficar tão expandido
-    doc.addImage(base64LogoTopo, "PNG", margin, 8, 24, 24, undefined, "FAST");
+    doc.addImage(base64LogoTopo, "PNG", margin, 16, 32, 8, undefined, "FAST");
 
     // Título no topo
     doc.setFontSize(18);
